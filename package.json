@@ -1,0 +1,23 @@
+{
+  "name": "example-create-react-app-express",
+  "scripts": {
+    "client": "cd fp-client && yarn start",
+    "server": "cd fp-server/bin/ && node www",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "dev:server": "cd fp-client && yarn build && cd .. && yarn start",
+    "start": "node www"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.0",
+    "package.json": "^2.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "create-react-app"
+  ]
+}

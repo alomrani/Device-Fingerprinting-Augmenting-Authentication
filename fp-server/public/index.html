@@ -1,0 +1,70 @@
+<html>
+
+<head>
+  <title>Express</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>API Endpoints</h1>
+  
+  <p><a href="./forgot-password.html">Click here to reset your password</a></p>
+  
+  <button type="button" id="btn">Get my fingerprint</button>
+  <p>Your browser fingerprint: <strong id="fp"></strong></p>
+  <p>Time took to calculate the fingerprint: <var id="time"></var> ms</p>
+  <p><strong>Detailed information: </strong></p>
+  <pre id="details"></pre>
+  
+  <script src="../Database/fingerprint2.js"></script>
+  <script>
+    var hasConsole = typeof console !== "undefined";
+
+    var fingerprintReport = function () {
+      var d1 = new Date();
+      Fingerprint2.get(function(components) {
+        var murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31);
+        var d2 = new Date();
+        var time = d2 - d1;
+        document.querySelector("#time").textContent = time;
+        document.querySelector("#fp").textContent = murmur;
+        var details = "";
+        if(hasConsole) {
+          console.log("time", time);
+          console.log("fingerprint hash", murmur)
+        }
+        for (var index in components) {
+          var obj = components[index];
+          var line = obj.key + " = " + String(obj.value).substr(0, 100);
+          if (hasConsole) {
+            console.log(line)
+          }
+          details += line + "\n"
+        }
+        document.querySelector("#details").textContent = details
+      })
+    };
+
+    var cancelId;
+    var cancelFunction;
+    
+    // see usage note in the README
+    if (window.requestIdleCallback) {
+      cancelId = requestIdleCallback(fingerprintReport);
+      cancelFunction = cancelIdleCallback
+    } else {
+      cancelId = setTimeout(fingerprintReport, 500);
+      cancelFunction = clearTimeout
+    }
+
+    document.querySelector("#btn").addEventListener("click", function () {
+      if (cancelId) {
+        cancelFunction(cancelId);
+        cancelId = undefined
+      }
+      fingerprintReport()
+    })
+  </script>
+</body>
+
+</html>

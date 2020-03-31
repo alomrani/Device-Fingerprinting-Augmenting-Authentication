@@ -1,0 +1,72 @@
+// Test permissions // TODO include or not?
+        /*
+        ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.WRITE_CALENDAR),
+            1)
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
+            == PackageManager.PERMISSION_GRANTED) {
+            Log.w("I/O", "WRITE_CALENDAR granted");
+        } else {
+            Log.w("I/O", "WRITE_CALENDAR not granted");
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK)
+            == PackageManager.PERMISSION_GRANTED) {
+            Log.w("I/O", "WAKE_LOCK granted");
+        } else {
+            Log.w("I/O", "WAKE_LOCK not granted");
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            Log.w("I/O", "ACCESS_COARSE_LOCATION granted");
+        } else {
+            Log.w("I/O", "ACCESS_COARSE_LOCATION not granted");
+        }
+
+        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManager.registerListener(this,
+            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_NORMAL);
+
+        if(sensor != null) {
+            //Toast.makeText(this, "acc", Toast.LENGTH_SHORT).show()
+        }
+        */
+
+
+         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+                val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+                sensorManager.registerListener(this,
+                    sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL)
+
+
+
+                    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
+                        }
+
+                        override fun onSensorChanged(event: SensorEvent?) {
+
+                            if (event?.sensor?.getType() == Sensor.TYPE_ACCELEROMETER) {
+                                getAccelerometer(event)
+                            }
+                        }
+
+                        private fun getAccelerometer(event: SensorEvent) {
+                            val values = event.values
+                            val x = values[0]
+                            val y = values[1]
+                            val z = values[2]
+
+                            val accelationSquareRoot = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH)
+                            if (accelationSquareRoot >= 2){
+                                Toast.makeText(this, "Device was shuffed", Toast.LENGTH_SHORT).show()
+
+                            }
+
+
+                        }
